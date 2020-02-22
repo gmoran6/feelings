@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route,
   Link,
@@ -10,6 +10,7 @@ import {
 import MainPage, { IFeelingMeasurment, Feeling } from './pages/MainPage';
 import DataPage from './pages/DataPage';
 import FeelingSavedPage from './pages/FeelingSavedPage';
+import { History } from 'history';
 
 const TestPage = () => {
   return (
@@ -23,8 +24,12 @@ const NotFoundPage = () => {
   )
 }
 
-const FeelingsApp = () => {
-  const history = useHistory();
+
+
+const FeelingsApp = (props:{
+  history: History<History.PoorMansUnknown>
+}) => {
+  const {history} = props
   const feelings: IFeelingMeasurment[] = [
     {
       createdAt: new Date(),
@@ -36,7 +41,7 @@ const FeelingsApp = () => {
     history.push(path)
   };
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route path="/test">
           <TestPage />

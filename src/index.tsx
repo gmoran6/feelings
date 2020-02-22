@@ -5,10 +5,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { ThemeProvider } from '@material-ui/core';
 import theme from './theme';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>
-        <App />
+        <App history={history}/>
     </ThemeProvider>, 
     document.getElementById('root')
 );
