@@ -2,6 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
+import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   centeredDisplay:{
@@ -26,6 +27,12 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
+const LinkBehavior = React.forwardRef<any, Omit<RouterLinkProps, 'to'>>(
+  (props, ref) => (
+    <RouterLink ref={ref} to={props.href || ''} {...props} />
+  ),
+);
+
 const FeelingSavedPage = () => {
   const classes = useStyles();
   return (
@@ -35,9 +42,9 @@ const FeelingSavedPage = () => {
           Feeling Saved!
         </Typography>
         <Typography variant="body1">
-          <Link href="/" color="inherit">Enter another feeling</Link>
+          <Link component={LinkBehavior} href="/" color="inherit">Enter another feeling</Link>
           <br/>
-          <Link href="data" color="inherit">View feelings data</Link>
+          <Link component={LinkBehavior} href="/data" color="inherit">View feelings data</Link>
         </Typography>
       </div>
     </div>

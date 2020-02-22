@@ -7,7 +7,7 @@ import {
   Link,
   useHistory
 } from "react-router-dom";
-import MainPage, { IFeelingMeasurment, Feeling } from './pages/MainPage';
+import MainPage, { IFeelingMeasurement, Feeling } from './pages/MainPage';
 import DataPage from './pages/DataPage';
 import FeelingSavedPage from './pages/FeelingSavedPage';
 import { History } from 'history';
@@ -30,7 +30,7 @@ const FeelingsApp = (props:{
   history: History<History.PoorMansUnknown>
 }) => {
   const {history} = props
-  const feelings: IFeelingMeasurment[] = [
+  const feelings: IFeelingMeasurement[] = [
     {
       createdAt: new Date(),
       feeling: Feeling.Positive,
@@ -39,6 +39,9 @@ const FeelingsApp = (props:{
   ];
   const navigate = (path: string) => {
     history.push(path)
+  };
+  const saveMeasurement = async (feelingMeasurement: IFeelingMeasurement) => {
+    feelings.push(feelingMeasurement)
   };
   return (
     <Router history={history}>
@@ -53,7 +56,7 @@ const FeelingsApp = (props:{
           <FeelingSavedPage />
         </Route>
         <Route exact path="/">
-          <MainPage navigate={navigate} />
+          <MainPage navigate={navigate} saveMeasurement={saveMeasurement} />
         </Route>
         <Route path="*">
           <NotFoundPage />

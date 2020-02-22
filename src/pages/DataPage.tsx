@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, createStyles, Theme, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
-import { IFeelingMeasurment } from './MainPage';
+import { IFeelingMeasurement } from './MainPage';
 import FeelingsApp from '../App';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   }));
 
 const DataPage = (props: {
-  feelings: IFeelingMeasurment[]
+  feelings: IFeelingMeasurement[]
 }) => {
   const classes = useStyles();
   return (
@@ -29,7 +29,7 @@ const DataPage = (props: {
       <div>
       <Table>
         <TableBody>
-          {props.feelings.map((feelingMeasurement: IFeelingMeasurment) => {
+          {props.feelings.map((feelingMeasurement: IFeelingMeasurement) => {
             return(
               <TableRow key={feelingMeasurement.id}>
                 <TableCell>{feelingMeasurement.feeling}</TableCell>

@@ -59,7 +59,7 @@ export enum Feeling {
   VeryPositive = "VeryPostive",
 }
 
-export interface IFeelingMeasurment {
+export interface IFeelingMeasurement {
   createdAt: Date,
   feeling: Feeling,
   id: string,
@@ -71,9 +71,10 @@ export interface IFeelingMeasurment {
  */
 const MainPage = (props: {
   navigate: (path: string) => void,
+  saveMeasurement: (feelingMeasurement: IFeelingMeasurement) => Promise<void>,
 }) => {
   const classes = useStyles();
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const feelingInput = form.elements.namedItem('feeling');
@@ -84,12 +85,18 @@ const MainPage = (props: {
     if (!(feeling in Feeling)) {
       throw new Error("Not an allowed feeling")
     }
-    const feelingMeasurment: IFeelingMeasurment = {
+    const feelingMeasurement: IFeelingMeasurement = {
       createdAt: new Date(),
       feeling: feeling as Feeling,
       id: uuid(),
     }
-    console.log("form submitted", { feelingMeasurment });
+    console.log("form submitted", { feelingMeasurement });
+
+    try {
+      await props.saveMeasurement(feelingMeasurement);
+    } catch(error) {
+      throw error;
+    }
     props.navigate("/save");
   };
   return (
