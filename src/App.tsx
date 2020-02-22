@@ -1,96 +1,61 @@
 import React from 'react';
-import logo from './logo.svg';
 import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Theme, createStyles } from '@material-ui/core';
-import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
-import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
-import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import classnames from 'classnames';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory
+} from "react-router-dom";
+import MainPage, { IFeelingMeasurment, Feeling } from './pages/MainPage';
+import DataPage from './pages/DataPage';
+import FeelingSavedPage from './pages/FeelingSavedPage';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  centeredDisplay:{
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "column",
-    height: "100vh",
-    justifyContent: "center",
-  },
-  centeredFeelings:{
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-  },
-  green: {
-    color: "green",
-  },
-  grey: {
-    color: "grey",
-  },
-  iconSize: {
-    fontSize: "3rem",
-  },
-  lightGreen: {
-    color: "limeGreen",
-  },
-  lightRed: {
-    color: "red",
-  },
-  red: {
-    color: "darkRed",
-  }
-}));
-
-const MainPage = () => {
-  const classes = useStyles();
+const TestPage = () => {
   return (
-    <div className={classes.centeredDisplay}>
-    {/* making the form with get method for now since I'm not sure where I'll save the input */}
-      <form method="get">
-        <Typography variant="h3" gutterBottom>How are you feeling now?</Typography>
-        <div className={classes.centeredFeelings}>
-          <IconButton
-            name="VeryNegative"
-            type="submit"
-            className={classes.red}
-          >
-            <SentimentVeryDissatisfiedIcon className={classes.iconSize} />
-          </IconButton>
-          <IconButton
-            name="Negative"
-            type="submit"
-            className={classes.lightRed}
-          >
-            <SentimentDissatisfiedIcon className={classes.iconSize} />
-          </IconButton>
-          <IconButton
-            name="Neutral"
-            type="submit"
-            className={classes.grey}
-          >
-            <SentimentSatisfiedIcon className={classes.iconSize} />
-          </IconButton>
-          <IconButton
-            name="Positive"
-            type="submit"
-            className={classes.lightGreen}
-          >
-            <SentimentSatisfiedAltIcon className={classes.iconSize} />
-          </IconButton>
-          <IconButton
-            name="VeryPositive"
-            type="submit"
-            className={classes.green}
-          >
-            <SentimentVerySatisfiedIcon className={classes.iconSize} />
-          </IconButton>
-        </div>
-      </form>
-    </div>
-  );
+    <Typography>Test Page</Typography>
+  )
 }
 
-export default MainPage;
+const NotFoundPage = () => {
+  return (
+    <Typography>Page not found</Typography>
+  )
+}
+
+const FeelingsApp = () => {
+  const history = useHistory();
+  const feelings: IFeelingMeasurment[] = [
+    {
+      createdAt: new Date(),
+      feeling: Feeling.Positive,
+      id: '1234',
+    }
+  ];
+  const navigate = (path: string) => {
+    history.push(path)
+  };
+  return (
+    <Router>
+      <Switch>
+        <Route path="/test">
+          <TestPage />
+        </Route>
+        <Route exact path="/data">
+          <DataPage feelings={feelings}/>
+        </Route>
+        <Route exact path="/save">
+          <FeelingSavedPage />
+        </Route>
+        <Route exact path="/">
+          <MainPage navigate={navigate} />
+        </Route>
+        <Route path="*">
+          <NotFoundPage />
+        </Route>
+      </Switch>
+    </Router>
+  )
+}
+
+export default FeelingsApp;
