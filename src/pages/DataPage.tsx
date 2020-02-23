@@ -1,9 +1,17 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, createStyles, Theme, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core';
+import Table from '@material-ui/core/Table';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
 import Link from '@material-ui/core/Link';
 import { IFeelingMeasurement } from './MainPage';
-import FeelingsApp from '../App';
+import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
+import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     menuDisplay: {
@@ -13,7 +21,40 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     menuItemPadding: {
       padding: "1rem",
     },
+    green: {
+      color: "green",
+    },
+    grey: {
+      color: "grey",
+    },
+    lightGreen: {
+      color: "limeGreen",
+    },
+    lightRed: {
+      color: "red",
+    },
+    red: {
+      color: "darkRed",
+    }
   }));
+
+function FeelingTextToIcon(feeling: string) {
+  const classes = useStyles();
+  switch (feeling) {
+    case 'VeryNegative':
+      return <SentimentVeryDissatisfiedIcon className={classes.red}/>;
+    case 'Negative':
+      return <SentimentDissatisfiedIcon className={classes.lightRed}/>;
+    case 'Neutral':
+      return <SentimentSatisfiedIcon className={classes.grey}/>;
+    case 'Positive':
+      return <SentimentSatisfiedAltIcon className={classes.lightGreen}/>;
+    case 'VeryPositive':
+      return <SentimentVerySatisfiedIcon className={classes.green}/>;
+    default:
+      return null;
+  }
+}
 
 const DataPage = (props: {
   feelings: IFeelingMeasurement[]
@@ -32,8 +73,8 @@ const DataPage = (props: {
           {props.feelings.map((feelingMeasurement: IFeelingMeasurement) => {
             return(
               <TableRow key={feelingMeasurement.id}>
-                <TableCell>{feelingMeasurement.feeling}</TableCell>
-                <TableCell>{feelingMeasurement.createdAt.toISOString()}</TableCell>
+                <TableCell>{FeelingTextToIcon(feelingMeasurement.feeling)}</TableCell>
+                <TableCell>{feelingMeasurement.createdAt.toString()}</TableCell>
               </TableRow>
             )
           })}
