@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import {
   Router,
@@ -24,27 +24,61 @@ const NotFoundPage = () => {
   )
 }
 
+/**
+ * Re-parse Dates correctly.
+ */
+function DateIsoStringReviver(options: {
+  keys: string[],
+}) {
+  return (key: string, value: string | number | object | undefined | Array<any>) => {
+    if ( ! options.keys.includes(key)) { return value; }
+    if (typeof value !== "string") { return value; }
+    const parsedDate = Date.parse(value);
+    if (isNaN(parsedDate)) { return value; }
+    return new Date(parsedDate);
+  }
+}
 
+/**
+ * Object that knows how to read/write FeelingsMeasurements from DOM localStorage API.
+ * It serializes them as JSON, but also makes sure to re-parse Dates correctly.
+ */
+const FeelingMeasurementStorage = () => {
+  const load = (): IFeelingMeasurement[] | null => {
+    const storedFeelings = localStorage.getItem('feelings')
+    if (!storedFeelings) return null
+    const parsedFeelings: Array<IFeelingMeasurement & { createdAt: string }> = JSON.parse(storedFeelings, DateIsoStringReviver({ keys: ['createdAt'] }))
+    const feelings = parsedFeelings.map((parsedFeeling) => {
+      const createdAt = new Date(Date.parse(parsedFeeling.createdAt))
+      return {...parsedFeeling, createdAt}
+    })
+    return feelings
+  }
+
+  const store = (feelings: IFeelingMeasurement[]) => {
+    localStorage.setItem('feelings', JSON.stringify(feelings))
+  }
+
+  return { load, store };
+}
 
 const FeelingsApp = (props:{
   history: History<History.PoorMansUnknown>
 }) => {
-  const {history} = props
-  const feelings: IFeelingMeasurement[] = [
-    {
-      createdAt: new Date(),
-      feeling: Feeling.Positive,
-      id: '1234',
-    }
-  ];
+  const feelingsMeasurementStorage = FeelingMeasurementStorage();
+  const [feelings, setFeelings] = useState(feelingsMeasurementStorage.load() || []);
   const navigate = (path: string) => {
-    history.push(path)
+    props.history.push(path)
   };
   const saveMeasurement = async (feelingMeasurement: IFeelingMeasurement) => {
-    feelings.push(feelingMeasurement)
+    setFeelings(prevFeelings => {
+      const newFeelings = [...prevFeelings, feelingMeasurement]
+      feelingsMeasurementStorage.store(newFeelings)
+      return newFeelings
+    })
   };
   return (
-    <Router history={history}>
+    <Router history={props.history}>
       <Switch>
         <Route path="/test">
           <TestPage />
