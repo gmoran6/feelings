@@ -10,6 +10,7 @@ import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfie
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import uuid from 'uuid';
+import { AppBarComponent } from './MainPage';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   centeredDisplay:{
@@ -38,13 +39,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   lightRed: {
     color: "red",
-  },
-  menuDisplay: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  menuItemPadding: {
-    padding: "1rem",
   },
   red: {
     color: "darkRed",
@@ -101,11 +95,7 @@ const EnterFeelingsPage = (props: {
   };
   return (
     <>
-      <div className={classes.menuDisplay}>
-        <Typography variant='body1' className={classes.menuItemPadding}>
-          <Link href="/data" color='inherit'>View Feelings</Link>
-        </Typography>
-      </div>
+      <AppBarComponent />
       <div className={classes.centeredDisplay}>
       {/* making the form with get method for now since I'm not sure where I'll save the input */}
         <Typography variant="h3" gutterBottom>How are you feeling now?</Typography>

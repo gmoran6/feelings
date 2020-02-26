@@ -12,15 +12,9 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
+import { AppBarComponent } from './MainPage';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-    menuDisplay: {
-      display: "flex",
-      justifyContent: "flex-end",
-    },
-    menuItemPadding: {
-      padding: "1rem",
-    },
     green: {
       color: "green",
     },
@@ -62,11 +56,7 @@ const DataPage = (props: {
   const classes = useStyles();
   return (
     <>
-      <div className={classes.menuDisplay}>
-        <Typography variant='body1' className={classes.menuItemPadding}>
-          <Link href="/" color='inherit' >Enter Feelings</Link>
-        </Typography>
-      </div>
+      <AppBarComponent />
       <div>
       <Table>
         <TableBody>
