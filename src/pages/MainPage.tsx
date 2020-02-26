@@ -2,20 +2,10 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Theme, createStyles } from '@material-ui/core';
-import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
-import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
-import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import uuid from 'uuid';
 import {ReactComponent as Logo} from './../logo.svg';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -61,9 +51,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 /** Components that create the drawer for the menu componenet */
 
-type DrawerSide = "left";
+export type DrawerSide = "left";
 
-const AppBarComponent = () => {
+export const AppBarComponent = () => {
   const classes = useStyles();
 
   const [state, setState] = React.useState({
@@ -136,9 +126,7 @@ const AppBarComponent = () => {
       <Toolbar>
         <IconButton
           edge="start"
-          // color="primary"
           aria-label="menu"
-          // className={classes.menu}
           onClick={toggleDrawer("left", true)}
           disableRipple
         >
