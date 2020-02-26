@@ -7,9 +7,10 @@ import {
   Link,
   useHistory
 } from "react-router-dom";
-import MainPage, { IFeelingMeasurement, Feeling } from './pages/MainPage';
+import EnterFeelingsPage, { IFeelingMeasurement, Feeling } from './pages/EnterFeelingsPage';
 import DataPage from './pages/DataPage';
 import FeelingSavedPage from './pages/FeelingSavedPage';
+import MainPage from './pages/MainPage';
 import { History } from 'history';
 
 const TestPage = () => {
@@ -89,8 +90,11 @@ const FeelingsApp = (props:{
         <Route exact path="/save">
           <FeelingSavedPage />
         </Route>
+        <Route exact path="/feelings">
+          <EnterFeelingsPage navigate={navigate} saveMeasurement={saveMeasurement} />
+        </Route>
         <Route exact path="/">
-          <MainPage navigate={navigate} saveMeasurement={saveMeasurement} />
+          <MainPage />
         </Route>
         <Route path="*">
           <NotFoundPage />

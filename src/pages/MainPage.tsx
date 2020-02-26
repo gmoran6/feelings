@@ -10,151 +10,166 @@ import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfie
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import uuid from 'uuid';
+import {ReactComponent as Logo} from './../logo.svg';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import AppBar from '@material-ui/core/AppBar';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  centeredDisplay:{
+  appBarIndex: {
+    zIndex: 4,
+  },
+  appNameIndex: {
+    zIndex: 3,
+  },
+  centeredDisplay: {
     alignItems: "center",
     display: "flex",
     flexDirection: "column",
-    height: "calc(100vh - 3rem)",
+    height: "calc(100vh - 5rem)",
     justifyContent: "center",
   },
-  centeredFeelings:{
+  list: {
+    width: "100%",
+  },
+  logoSize: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    height: "calc(100vh - 5rem)",
+    position: "absolute",
+    width: "100vw",
+    zIndex: 2,
   },
-  green: {
-    color: "green",
+  logoMargin: {
+    margin: "auto",
   },
-  grey: {
-    color: "grey",
+  menu: {
+    display: "contents",
+    justifyContent: "flex-start",
+    minWidth: "3rem",
   },
-  iconSize: {
-    fontSize: "3rem",
+  menuListItem: {
+    minWidth: "10rem",
   },
-  lightGreen: {
-    color: "limeGreen",
-  },
-  lightRed: {
-    color: "red",
-  },
-  menuDisplay: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  menuItemPadding: {
-    padding: "1rem",
-  },
-  red: {
-    color: "darkRed",
-  }
 }));
 
-export enum Feeling {
-  VeryNegative = "VeryNegative",
-  Negative = "Negative",
-  Neutral = "Neutral",
-  Positive = "Positive",
-  VeryPositive = "VeryPostive",
-}
+/** Components that create the drawer for the menu componenet */
 
-export interface IFeelingMeasurement {
-  createdAt: Date,
-  feeling: Feeling,
-  id: string,
-}
+type DrawerSide = "left";
 
-/**
- * Home page for Feelings App. Allows the user to record a current FeelingMeasurement
- * @param props.navigate Function that navigates to another page in the app. The argument is the url path to navigate to. e.g: "/save"
- */
-const MainPage = (props: {
-  navigate: (path: string) => void,
-  saveMeasurement: (feelingMeasurement: IFeelingMeasurement) => Promise<void>,
-}) => {
+const AppBarComponent = () => {
   const classes = useStyles();
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const feelingInput = form.elements.namedItem('feeling');
-    if (!feelingInput) {
-      throw new Error("Can't find feeling input");
-    }
-    const feeling = (feelingInput as HTMLInputElement).value;
-    if (!(feeling in Feeling)) {
-      throw new Error("Not an allowed feeling")
-    }
-    const feelingMeasurement: IFeelingMeasurement = {
-      createdAt: new Date(),
-      feeling: feeling as Feeling,
-      id: uuid(),
-    }
-    console.log("form submitted", { feelingMeasurement });
 
-    try {
-      await props.saveMeasurement(feelingMeasurement);
-    } catch(error) {
-      throw error;
+  const [state, setState] = React.useState({
+    left: false,
+  });
+
+  const toggleDrawer = (side: DrawerSide, open: boolean) => (
+    event: React.KeyboardEvent | React.MouseEvent,
+  ) => {
+    if (
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
+    ) {
+      return;
     }
-    props.navigate("/save");
+    setState({ ...state, [side]: open });
   };
-  return (
-    <>
-      <div className={classes.menuDisplay}>
-        <Typography variant='body1' className={classes.menuItemPadding}>
-          <Link href="/data" color='inherit'>View Feelings</Link>
-        </Typography>
+
+  const SideList = (side: DrawerSide) => {
+    const classes = useStyles();
+    return (
+      <div
+        className={classes.list}
+        role="presentation"
+        onClick={toggleDrawer(side, false)}
+        onKeyDown={toggleDrawer(side, false)}
+      >
+        <List>
+          <ListItem
+            button
+            key={"Enter Feelings"}
+            component="a"
+            href="/feelings"
+            className={classes.menuListItem}
+          >
+            <ListItemText primary={"Enter Feelings"} />
+          </ListItem>
+          <ListItem
+            button
+            key={"View Feelings"}
+            component="a"
+            href="/data"
+            className={classes.menuListItem}
+          >
+            <ListItemText primary={"View Feelings"} />
+          </ListItem>
+          <ListItem
+            button
+            key={"Settings"}
+            component="a"
+            href="/settings"
+            className={classes.menuListItem}
+          >
+            <ListItemText primary={"Settings"} />
+          </ListItem>
+        </List>
       </div>
+      );
+    };
+  return (
+    <AppBar
+      position="static"
+      elevation={0}
+      style={{
+        backgroundColor: "white",
+      }}
+      className={classes.appBarIndex}
+    >
+      <Toolbar>
+        <IconButton
+          edge="start"
+          // color="primary"
+          aria-label="menu"
+          // className={classes.menu}
+          onClick={toggleDrawer("left", true)}
+          disableRipple
+        >
+          <MenuIcon />
+        </IconButton>
+        <Drawer
+          anchor="left"
+          open={state.left}
+          ModalProps={{
+            BackdropProps: {
+              invisible: true,
+            },
+          }}
+          onClose={toggleDrawer("left", false)}
+        >
+          {SideList("left")}
+        </Drawer>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+const MainPage = () => {
+  const classes = useStyles();
+  return(
+    <>
+      <AppBarComponent/>
       <div className={classes.centeredDisplay}>
-      {/* making the form with get method for now since I'm not sure where I'll save the input */}
-        <Typography variant="h3" gutterBottom>How are you feeling now?</Typography>
-        <div className={classes.centeredFeelings}>
-          <form method="get" onSubmit={onSubmit}>
-            <input type="hidden" name="feeling" value="VeryNegative" />
-            <IconButton
-              type="submit"
-              className={classes.red}
-            >
-              <SentimentVeryDissatisfiedIcon className={classes.iconSize} />
-            </IconButton>
-          </form>
-          <form method="get" onSubmit={onSubmit}>
-            <input type="hidden" name="feeling" value="Negative" />
-            <IconButton
-              type="submit"
-              className={classes.lightRed}
-            >
-              <SentimentDissatisfiedIcon className={classes.iconSize} />
-            </IconButton>
-          </form>
-          <form method="get" onSubmit={onSubmit}>
-            <input type="hidden" name="feeling" value="Neutral" />
-            <IconButton
-              type="submit"
-              className={classes.grey}
-            >
-              <SentimentSatisfiedIcon className={classes.iconSize} />
-            </IconButton>
-          </form>
-          <form method="get" onSubmit={onSubmit}>
-            <input type="hidden" name="feeling" value="Positive" />
-            <IconButton
-              type="submit"
-              className={classes.lightGreen}
-            >
-              <SentimentSatisfiedAltIcon className={classes.iconSize} />
-            </IconButton>
-          </form>
-          <form method="get" onSubmit={onSubmit}>
-            <input type="hidden" name="feeling" value="VeryPositive" />
-            <IconButton
-              type="submit"
-              className={classes.green}
-            >
-              <SentimentVerySatisfiedIcon className={classes.iconSize} />
-            </IconButton>
-          </form>
+        <Typography variant="h1" className={classes.appNameIndex}>Feelings</Typography>
+        <div className={classes.logoSize}>
+          <Logo className={classes.logoMargin}/>
         </div>
       </div>
     </>
