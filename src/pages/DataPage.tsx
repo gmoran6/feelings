@@ -29,7 +29,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
     red: {
       color: "darkRed",
-    }
+    },
+    pagePadding: {
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+    },
   }));
 
 function FeelingTextToIcon(feeling: string) {
@@ -57,7 +61,7 @@ const DataPage = (props: {
   return (
     <>
       <AppBarComponent />
-      <div>
+      <div className={classes.pagePadding}>
       <Table>
         <TableBody>
           {props.feelings.map((feelingMeasurement: IFeelingMeasurement) => {

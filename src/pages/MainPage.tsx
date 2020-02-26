@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     flexDirection: "column",
     height: "calc(100vh - 5rem)",
     justifyContent: "center",
+    paddingLeft: "1rem",
+    paddingRight: "1rem",
   },
   list: {
     width: "100%",
@@ -110,6 +112,15 @@ export const AppBarComponent = () => {
           >
             <ListItemText primary={"Settings"} />
           </ListItem>
+          <ListItem
+            button
+            key={"Home"}
+            component="a"
+            href="/"
+            className={classes.menuListItem}
+          >
+            <ListItemText primary={"Home"} />
+          </ListItem>
         </List>
       </div>
       );
@@ -155,7 +166,8 @@ const MainPage = () => {
     <>
       <AppBarComponent/>
       <div className={classes.centeredDisplay}>
-        <Typography variant="h1" className={classes.appNameIndex}>Feelings</Typography>
+        <Typography variant="h1" gutterBottom className={classes.appNameIndex}>Feelings</Typography>
+        <Typography variant="caption" className={classes.appNameIndex}>Track your feelings and match them to your personal data.</Typography>
         <div className={classes.logoSize}>
           <Logo className={classes.logoMargin}/>
         </div>

@@ -9,7 +9,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-    
+    pagePadding: {
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+    },
   }));
 
 const SettingsPage = () => {
@@ -25,24 +28,26 @@ const SettingsPage = () => {
     return (
       <>
         <AppBarComponent />
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell>
-                <Typography >Enable notifications.</Typography>
-                <Typography variant="caption">Get reminders to enter your feelings</Typography>
-              </TableCell> 
-              <TableCell>
-                <Switch
-                  checked={state.checkedA}
-                  onChange={handleChange('checkedA')}
-                  value="checkedA"
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <div className={classes.pagePadding}>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography >Enable notifications.</Typography>
+                  <Typography variant="caption">Get reminders to enter your feelings</Typography>
+                </TableCell> 
+                <TableCell>
+                  <Switch
+                    checked={state.checkedA}
+                    onChange={handleChange('checkedA')}
+                    value="checkedA"
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
       </>
     );
 } 
