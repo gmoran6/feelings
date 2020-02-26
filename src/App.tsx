@@ -12,6 +12,7 @@ import DataPage from './pages/DataPage';
 import FeelingSavedPage from './pages/FeelingSavedPage';
 import MainPage from './pages/MainPage';
 import { History } from 'history';
+import SettingsPage from './pages/SettingsPage';
 
 const TestPage = () => {
   return (
@@ -92,6 +93,9 @@ const FeelingsApp = (props:{
         </Route>
         <Route exact path="/feelings">
           <EnterFeelingsPage navigate={navigate} saveMeasurement={saveMeasurement} />
+        </Route>
+        <Route exact path="/settings">
+          <SettingsPage />
         </Route>
         <Route exact path="/">
           <MainPage />
